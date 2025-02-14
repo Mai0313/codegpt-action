@@ -12,4 +12,13 @@ jobs:
     - name: code review action
       uses: ./
       with:
+        openai_provider: 'openai'  # Optional, required if not openai.
         openai_api_key: ${{ secrets.openai_api_key }}
+        openai_api_version: ''  # Optional
+        openai_base_url: ''  # Optional
+        openai_headers: ''  # Optional
+        openai_max_tokens: '1000'  # Optional
+        openai_model: 'gpt-4o-mini'  # Optional
+        openai_temperature: '0.1'  # Optional
+        openai_lang: 'en'  # Optional
+        openai_org_id: ''  # Optional

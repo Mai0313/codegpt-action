@@ -1,22 +1,75 @@
 name: 'CodeGPT'
 description: 'Github Action for CodeGPT'
 author: 'Bo-Yi Wu'
+
 inputs:
-  openai_api_key:  # Open AI API Key
-    description: 'OpenAI API Key'
+  openai_provider:
+    description: >
+      OpenAI API Provider
+      It can be openai, azure, anthropic, etc. Defaults to openai.
+    required: false
+    default: 'openai'
+
+  openai_api_key:
+    description: >
+      OpenAI API Key
     required: true
-    default: ''
-  openai_base_url:  # Open AI Base URL
-    description: 'OpenAI Base URL'
+
+  openai_api_version:
+    description: >
+      OpenAI API Version
+      This can be required by some OpenAI compatible providers, e.g. Azure OpenAI, X AI, etc.
     required: false
-  openai_org_id:  # Open AI ORG ID
-    description: 'OpenAI ORG ID'
+    default: ''
+
+  openai_base_url:
+    description: >
+      OpenAI Base URL
+      Assign this value if you are using a custom OpenAI provider. Defaults to https://api.openai.com/v1.
+    required: false
+    default: 'https://api.openai.com/v1'
+
+  openai_headers:
+    description: >
+      OpenAI Headers
+      Assign this value if you want to add custom headers to the OpenAI API request in the following format:
+      "key=value,key2=value2"
+      e.g. "X-User-Id=xxxxxxxx"
     required: false
     default: ''
-  openai_model:  # Open AI Model
+
+  openai_max_tokens:
+    description: >
+      OpenAI Max Tokens
+      The maximum number of tokens to generate. Requests can use up to 4096 tokens shared between prompt and completion. Defaults to 100.
+    required: false
+    default: '1000'
+
+  openai_model:
     description: 'OpenAI Model'
     required: false
-    default: 'gpt-3.5-turbo'
+    default: 'gpt-4o'
+
+  openai_temperature:
+    description: >
+      OpenAI Temperature
+      What sampling temperature to use. Higher values mean the model will take more risks. Try 0.1 for more likely but boring text, and 1.0 for more creative text. Defaults to 0.1.
+    required: false
+    default: '0.1'
+
+  openai_lang:
+    description: >
+      OpenAI Language
+      The language of the text to generate. Defaults to en.
+    required: false
+    default: 'en'
+
+  openai_org_id:
+    description: >
+      OpenAI ORG ID
+      Assign this value if you are using an OpenAI organization account.
+    required: false
+    default: ''
 
 outputs:
   review: # Code review
@@ -25,3 +78,14 @@ outputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  env:
+    OPENAI_PROVIDER: ${{ inputs.openai_provider }}
+    OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+    OPENAI_API_VERSION: ${{ inputs.openai_api_version }}
+    OPENAI_BASE_URL: ${{ inputs.openai_base_url }}
+    OPENAI_HEADERS: ${{ inputs.openai_headers }}
+    OPENAI_MAX_TOKENS: ${{ inputs.openai_max_tokens }}
+    OPENAI_MODEL: ${{ inputs.openai_model }}
+    OPENAI_TEMPERATURE: ${{ inputs.openai_temperature }}
+    OPENAI_LANG: ${{ inputs.openai_lang }}
+    OPENAI_ORG_ID: ${{ inputs.openai_org_id }}
